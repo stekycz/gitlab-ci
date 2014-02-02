@@ -21,12 +21,7 @@ class BuildsController < ApplicationController
   def retry
     @build = builds.limit(1).first
 
-    build = project.builds.create(
-      sha: @build.sha,
-      before_sha: @build.before_sha,
-      push_data: @build.push_data,
-      ref: @build.ref
-    )
+    build = CreateBuildService.new.execute(project, @build)
 
     redirect_to project_build_path(project, build)
   end

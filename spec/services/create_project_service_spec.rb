@@ -2,10 +2,13 @@ require 'spec_helper'
 
 describe CreateProjectService do
   let(:service) { CreateProjectService.new }
-  let(:current_user) { double.as_null_object }
+  let(:current_user) { User.new(JSON.parse(File.read(Rails.root.join('spec/support/gitlab_stubs/user.json'))).merge({'url' => 'http://localhost/'})) }
   let(:project_dump) { File.read(Rails.root.join('spec/support/gitlab_stubs/raw_project.yml')) }
 
-  before { Network.any_instance.stub(enable_ci: true) }
+  before do
+    stub_gitlab_calls
+    Network.any_instance.stub(enable_ci: true)
+  end
 
   describe :execute do
     context 'valid params' do

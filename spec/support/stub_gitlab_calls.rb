@@ -5,6 +5,7 @@ module StubGitlabCalls
     stub_project_8
     stub_projects
     stub_projects_owned
+    stub_repository_tree
   end
 
   def stub_js_gitlab_calls
@@ -58,5 +59,11 @@ module StubGitlabCalls
   def project_hash_array
     f = File.read(Rails.root.join('spec/support/gitlab_stubs/projects.json'))
     return JSON.parse f
+  end
+
+  def stub_repository_tree
+    stub_request(:get, "http://demo.gitlabhq.com/api/v3/projects/8/repository/tree.json?path=&private_token=Wvjy2Krpb7y8xi93owUz&ref_name=master").
+      with(:headers => {'Content-Type'=>'application/json'}).
+      to_return(:status => 200, :body => "", :headers => {})
   end
 end
