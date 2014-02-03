@@ -6,6 +6,10 @@ describe API::API do
   let(:runner) { FactoryGirl.create(:runner) }
   let(:project) { FactoryGirl.create(:project) }
 
+  before do
+    stub_gitlab_calls
+  end
+
   describe "Builds API for runners" do
     before do
       FactoryGirl.create :runner_project, project_id: project.id, runner_id: runner.id

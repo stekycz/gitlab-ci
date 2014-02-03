@@ -4,6 +4,10 @@ describe CreateBuildService do
   let(:service) { CreateBuildService.new }
   let(:project) { FactoryGirl.create(:project) }
 
+  before do
+    stub_gitlab_calls
+  end
+
   describe :execute do
     context 'valid params' do
       let(:build) { service.execute(project, ref: 'refs/heads/master', before: '00000000', after: '31das312') }

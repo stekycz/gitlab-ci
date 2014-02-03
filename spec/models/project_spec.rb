@@ -107,7 +107,7 @@ describe Project do
 
   describe 'Project.parse' do
     let(:project_dump) { File.read(Rails.root.join('spec/support/gitlab_stubs/raw_project.yml')) }
-    let(:parsed_project) { Project.parse(project_dump) }
+    let(:parsed_project) { Project.parse(project_dump, 'Wvjy2Krpb7y8xi93owUz') }
 
     it { parsed_project.should be_valid }
     it { parsed_project.should be_kind_of(Project) }

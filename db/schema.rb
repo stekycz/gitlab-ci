@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140130121538) do
+ActiveRecord::Schema.define(version: 20140202124721) do
 
   create_table "builds", force: true do |t|
     t.integer  "project_id"
@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(version: 20140130121538) do
     t.string   "before_sha"
     t.text     "push_data",   limit: 16777215
     t.integer  "runner_id"
+    t.text     "parameters"
   end
 
   add_index "builds", ["project_id"], name: "index_builds_on_project_id", using: :btree
@@ -50,6 +51,7 @@ ActiveRecord::Schema.define(version: 20140130121538) do
     t.string   "email_recipients",         default: "",    null: false
     t.boolean  "email_add_committer",      default: true,  null: false
     t.boolean  "email_only_broken_builds", default: true,  null: false
+    t.string   "private_token"
   end
 
   create_table "runner_projects", force: true do |t|

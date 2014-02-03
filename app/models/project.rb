@@ -20,13 +20,15 @@
 #  email_recipients        :string(255)      default(""), not null
 #  email_add_committer     :boolean          default(TRUE), not null
 #  email_only_broken_builds :boolean          default(TRUE), not null
+#  private_token           :string
 #
 
 class Project < ActiveRecord::Base
   attr_accessible :name, :path, :scripts, :timeout, :token,
     :default_ref, :gitlab_url, :always_build, :polling_interval,
     :public, :ssh_url_to_repo, :gitlab_id, :allow_git_fetch,
-    :email_recipients, :email_add_committer, :email_only_broken_builds
+    :email_recipients, :email_add_committer, :email_only_broken_builds,
+    :private_token
 
   has_many :builds, dependent: :destroy
   has_many :runner_projects, dependent: :destroy
@@ -35,7 +37,7 @@ class Project < ActiveRecord::Base
   #
   # Validations
   #
-  validates_presence_of :name, :scripts, :timeout, :token, :default_ref, :gitlab_url, :ssh_url_to_repo, :gitlab_id
+  validates_presence_of :name, :scripts, :timeout, :token, :default_ref, :gitlab_url, :ssh_url_to_repo, :gitlab_id, :private_token
 
   validates_uniqueness_of :name
 
@@ -49,7 +51,7 @@ class Project < ActiveRecord::Base
   before_validation :set_default_values
 
   class << self
-    def parse(project_yaml)
+    def parse(project_yaml, private_token)
       project = YAML.load(project_yaml)
 
       params = {
@@ -61,6 +63,7 @@ class Project < ActiveRecord::Base
         ssh_url_to_repo:         project.ssh_url_to_repo,
         email_add_committer:     GitlabCi.config.gitlab_ci.add_committer,
         email_only_broken_builds: GitlabCi.config.gitlab_ci.all_broken_builds,
+        private_token: private_token,
       }
 
       Project.new(params)

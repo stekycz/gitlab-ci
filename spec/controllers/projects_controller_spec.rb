@@ -3,6 +3,7 @@ require "spec_helper"
 describe ProjectsController do
   before do
     @project = FactoryGirl.create :project
+    stub_gitlab_calls
   end
 
   describe "POST #build" do
