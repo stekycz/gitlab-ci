@@ -24,6 +24,7 @@ class Build < ActiveRecord::Base
   belongs_to :runner
 
   serialize :push_data
+  serialize :parameters
 
   attr_accessible :project_id, :ref, :sha, :before_sha,
     :status, :finished_at, :trace, :started_at, :push_data, :runner_id, :project_name,
